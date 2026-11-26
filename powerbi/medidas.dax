@@ -1,0 +1,70 @@
+// =====================================================================================================
+//  Medidas DAX – Tablero SGSI (sección 15.2 del ER, RF-42, RF-43)
+//  Tabla de medidas: _Medidas.  Relaciones: Activos[IdActivo] 1—* Excepciones[IdActivo], Revisiones[IdActivo], Alertas[IdActivo]
+//  Calendario[Fecha] 1—* Activos[RN_ProximaRevision] (activa), Activos[RN_FechaAlta] (inactiva)
+// =====================================================================================================
+
+// ---------- Resumen ejecutivo ----------
+Activos (total) = CALCULATE ( COUNTROWS ( Activos ), Activos[RN_Estado] <> "Dado de baja" )
+Activos vigentes = CALCULATE ( COUNTROWS ( Activos ), Activos[RN_Estado] = "Vigente" )
+Activos críticos = CALCULATE ( [Activos (total)], Activos[RN_Critico] = "Sí" )
+% Clasificado =
+    DIVIDE ( CALCULATE ( [Activos (total)], NOT ISBLANK ( Activos[RN_Nivel] ) ), [Activos (total)] )
+Sin clasificar (reportados como Confidencial) = CALCULATE ( [Activos (total)], ISBLANK ( Activos[RN_Nivel] ) )      // RN-06 / RF-20
+Activos compartidos (Ambas) = CALCULATE ( [Activos (total)], Activos[EntidadCodigo] = "AMBAS" )
+
+// ---------- Cumplimiento ----------
+% Con Dueño = DIVIDE ( CALCULATE ( [Activos (total)], NOT ISBLANK ( Activos[RN_DuenoCargo] ) ), [Activos (total)] )
+% Validados por CISO = DIVIDE ( CALCULATE ( [Activos (total)], Activos[RN_ValidacionCISO] = "Validado" ), [Activos (total)] )
+Revisiones integrales vencidas =
+    CALCULATE ( COUNTROWS ( Activos ), Activos[RN_Estado] IN { "Vigente", "En revisión" }, Activos[RN_ProximaRevision] < TODAY () )
+Revisiones de accesos vencidas =
+    CALCULATE ( COUNTROWS ( Activos ), Activos[RN_Estado] IN { "Vigente", "En revisión" }, Activos[RN_ProximaRevisionAccesos] < TODAY () )
+Revisiones por vencer 30d =
+    CALCULATE ( COUNTROWS ( Activos ), Activos[RN_Estado] = "Vigente",
+        Activos[RN_ProximaRevision] >= TODAY (), Activos[RN_ProximaRevision] <= TODAY () + 30 )
+Activos con alertas bloqueantes = CALCULATE ( [Activos (total)], Activos[RN_AlertasBloqueantes] = TRUE () )
+% Revisión integral al día = 1 - DIVIDE ( [Revisiones integrales vencidas], [Activos vigentes] )
+Críticos sin ID de riesgo = CALCULATE ( [Activos críticos], ISBLANK ( Activos[RN_IdRiesgo] ) )
+
+// ---------- Datos personales (DPO) ----------
+Activos con datos personales = CALCULATE ( [Activos (total)], Activos[RN_DatosPersonales] = "Sí" )
+Activos con datos sensibles = CALCULATE ( [Activos (total)], Activos[RN_DatosSensibles] = "Sí" )
+% Vinculados al RAT =
+    DIVIDE ( CALCULATE ( [Activos con datos personales], NOT ISBLANK ( Activos[RN_IdRAT] ) ), [Activos con datos personales] )
+Transferencias internacionales = CALCULATE ( [Activos con datos personales], Activos[RN_TransferenciaInternacional] = "Sí" )
+
+// ---------- Terceros ----------
+Activos en terceros = CALCULATE ( [Activos (total)], NOT ISBLANK ( Activos[RN_Tercero] ) )
+Activos en servicios externalizados significativos = CALCULATE ( [Activos en terceros], Activos[RN_ExternalizadoSignificativo] = "Sí" )   // NCG 573
+Países de procesamiento = DISTINCTCOUNT ( Activos[RN_PaisProcesamiento] )
+
+// ---------- Excepciones ----------
+Excepciones vigentes = CALCULATE ( COUNTROWS ( Excepciones ), Excepciones[RN_EstadoExcepcion] = "Vigente", Excepciones[RN_FechaFin] >= TODAY () )
+Excepciones vencidas =
+    CALCULATE ( COUNTROWS ( Excepciones ),
+        FILTER ( Excepciones, Excepciones[RN_EstadoExcepcion] = "Vencida" || ( Excepciones[RN_EstadoExcepcion] = "Vigente" && Excepciones[RN_FechaFin] < TODAY () ) ) )
+Excepciones por vencer 30d =
+    CALCULATE ( COUNTROWS ( Excepciones ), Excepciones[RN_EstadoExcepcion] = "Vigente",
+        Excepciones[RN_FechaFin] >= TODAY (), Excepciones[RN_FechaFin] <= TODAY () + 30 )
+
+// ---------- Calidad de datos ----------
+Alertas (total) = COUNTROWS ( Alertas )
+Alertas bloqueantes = CALCULATE ( COUNTROWS ( Alertas ), Alertas[Bloqueante] = TRUE () )
+Activos con alguna alerta = DISTINCTCOUNT ( Alertas[IdActivo] )
+
+// ---------- Informe anual al CSI y resumen NCG 454 (RF-43) ----------
+Índice de madurez del inventario =
+    // Promedio simple de 4 indicadores de cumplimiento (0-100). Ponderación ajustable por el CISO.
+    100 * AVERAGEX (
+        { [% Con Dueño], [% Validados por CISO], [% Revisión integral al día], [% Vinculados al RAT] },
+        [Value]
+    )
+Texto resumen NCG 454 =
+    VAR e = SELECTEDVALUE ( Activos[EntidadCodigo], "ambas entidades" )
+    RETURN
+        "Al " & FORMAT ( TODAY (), "dd-mm-yyyy" ) & ", " & e & " mantiene " & FORMAT ( [Activos (total)], "#,0" )
+            & " activos de información inventariados (" & FORMAT ( [Activos críticos], "#,0" ) & " críticos), "
+            & FORMAT ( [% Clasificado], "0%" ) & " clasificados y " & FORMAT ( [% Validados por CISO], "0%" )
+            & " validados por el CISO; " & FORMAT ( [Revisiones integrales vencidas], "#,0" ) & " revisiones vencidas y "
+            & FORMAT ( [Excepciones vigentes], "#,0" ) & " excepciones vigentes."

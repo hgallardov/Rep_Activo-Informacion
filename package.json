@@ -1,0 +1,11 @@
+{
+  "name": "rn-inventario-activos-m365",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Solución de Inventario y Clasificación de Activos de Información sobre Microsoft 365 – Renta Nacional (ER[ZZ].GR_1.0(2026))",
+  "scripts": {
+    "test": "node --test tests/reglas/reglas.test.js",
+    "validar": "node tools/validar-configuracion.js"
+  },
+  "engines": { "node": ">=18" }
+}

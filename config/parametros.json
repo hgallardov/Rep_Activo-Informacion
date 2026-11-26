@@ -1,0 +1,306 @@
+{
+  "$comment": "Semilla de la lista Parametros (RF-05, RNF-17). Title = clave. Los flujos y la app leen estos valores; modificarlos no requiere cambiar código. Los valores marcados 'AJUSTAR' deben confirmarse contra la Norma de Clasificación (Anexo 1) y las decisiones D-03/D-06.",
+  "parametros": [
+    {
+      "clave": "FREC_REVISION_MESES",
+      "valor": "12",
+      "tipo": "Número",
+      "fuente": "NG 4.3 / RN-04",
+      "descripcion": "Frecuencia de revisión integral de activos no críticos y sin datos personales."
+    },
+    {
+      "clave": "FREC_REVISION_CRITICO_MESES",
+      "valor": "6",
+      "tipo": "Número",
+      "fuente": "NG 4.3 / RN-04",
+      "descripcion": "Frecuencia de revisión integral para activos críticos o con datos personales."
+    },
+    {
+      "clave": "FREC_REVISION_ACCESOS_MESES",
+      "valor": "6",
+      "tipo": "Número",
+      "fuente": "NG 4.3; NC 4.4 / RN-05",
+      "descripcion": "Frecuencia de revisión de accesos para Confidencial y Reservado."
+    },
+    {
+      "clave": "NIVELES_CON_REVISION_ACCESOS",
+      "valor": "[\"Confidencial\",\"Reservado\"]",
+      "tipo": "JSON",
+      "fuente": "RN-05",
+      "descripcion": "Niveles sujetos a revisión semestral de accesos."
+    },
+    {
+      "clave": "AVISOS_DIAS_ANTES",
+      "valor": "[30,15,0]",
+      "tipo": "JSON",
+      "fuente": "RF-31",
+      "descripcion": "Días antes del vencimiento en que se envían recordatorios."
+    },
+    {
+      "clave": "ESCALAR_DIAS_DESPUES",
+      "valor": "1",
+      "tipo": "Número",
+      "fuente": "RF-31",
+      "descripcion": "Días de atraso tras los cuales se escala al CISO y a la jefatura del Dueño."
+    },
+    {
+      "clave": "PLAZO_VALIDACION_DIAS",
+      "valor": "5",
+      "tipo": "Número",
+      "fuente": "RF-25",
+      "descripcion": "Días hábiles para que CISO o DPO respondan una validación antes del recordatorio."
+    },
+    {
+      "clave": "ESCALAR_VALIDACION_DIAS",
+      "valor": "10",
+      "tipo": "Número",
+      "fuente": "RF-25",
+      "descripcion": "Días tras los cuales una validación pendiente se escala al CSI."
+    },
+    {
+      "clave": "EXCEPCION_MAX_MESES",
+      "valor": "12",
+      "tipo": "Número",
+      "fuente": "NG 4.9 / RN-10",
+      "descripcion": "Vigencia máxima de una excepción."
+    },
+    {
+      "clave": "EXCEPCION_AVISO_DIAS",
+      "valor": "30",
+      "tipo": "Número",
+      "fuente": "RF-37",
+      "descripcion": "Días antes del fin de vigencia en que se avisa para reevaluación."
+    },
+    {
+      "clave": "EXCEPCION_TIPO_APROBACION_CSI",
+      "valor": "Primero en responder",
+      "tipo": "Texto",
+      "fuente": "RF-37",
+      "descripcion": "'Primero en responder' o 'Todos deben aprobar', según el reglamento del CSI."
+    },
+    {
+      "clave": "NIVEL_MIN_DATOS_PERSONALES",
+      "valor": "Reservado",
+      "tipo": "Texto",
+      "fuente": "NC 4.3; NG 4.4 / RN-02 (sujeto a D-03)",
+      "descripcion": "Nivel mínimo de un activo con datos personales."
+    },
+    {
+      "clave": "NIVEL_MIN_DATOS_SENSIBLES",
+      "valor": "Confidencial",
+      "tipo": "Texto",
+      "fuente": "NC 4.3 / RN-02 (sujeto a D-03)",
+      "descripcion": "Nivel mínimo de un activo con datos sensibles."
+    },
+    {
+      "clave": "NIVEL_POR_DEFECTO",
+      "valor": "Confidencial",
+      "tipo": "Texto",
+      "fuente": "NC 4.3 / RN-06",
+      "descripcion": "Nivel con que se trata y reporta un activo sin clasificar."
+    },
+    {
+      "clave": "ORDEN_NIVELES",
+      "valor": "{\"Pública\":1,\"Uso Interno\":2,\"Reservado\":3,\"Confidencial\":4}",
+      "tipo": "JSON",
+      "fuente": "NC 4.1",
+      "descripcion": "Orden de sensibilidad (mayor número = más sensible)."
+    },
+    {
+      "clave": "MAPEO_ETIQUETAS_PURVIEW",
+      "valor": "{\"Pública\":\"Pública\",\"Uso Interno\":\"Uso Interno\",\"Reservado\":\"Reservado\",\"Confidencial\":\"Confidencial\"}",
+      "tipo": "JSON",
+      "fuente": "RF-46",
+      "descripcion": "Nombre de la etiqueta de sensibilidad de Purview que corresponde a cada nivel."
+    },
+    {
+      "clave": "REGLAS_MANEJO",
+      "valor": "{\"Confidencial\":{\"almacenamiento\":\"Solo repositorios corporativos aprobados con acceso restringido a cargos autorizados y cifrado.\",\"transmision\":\"Solo cifrada; prohibido el correo personal y la mensajería no corporativa.\",\"impresion\":\"Solo si es imprescindible, retiro inmediato y resguardo bajo llave.\",\"mediosRemovibles\":\"Prohibido salvo autorización del Dueño y medio cifrado.\",\"eliminacion\":\"Destrucción segura y certificada.\",\"referencia\":\"NC Anexo 1 – Confidencial\"},\"Reservado\":{\"almacenamiento\":\"Repositorios corporativos con acceso restringido a cargos y terceros autorizados.\",\"transmision\":\"Canales corporativos; cifrado hacia externos.\",\"impresion\":\"Permitida con retiro inmediato.\",\"mediosRemovibles\":\"Solo medios corporativos cifrados.\",\"eliminacion\":\"Destrucción segura con registro.\",\"referencia\":\"NC Anexo 1 – Reservado\"},\"Uso Interno\":{\"almacenamiento\":\"Repositorios corporativos.\",\"transmision\":\"Canales corporativos.\",\"impresion\":\"Permitida.\",\"mediosRemovibles\":\"Medios corporativos.\",\"eliminacion\":\"Eliminación por canales corporativos.\",\"referencia\":\"NC Anexo 1 – Uso Interno\"},\"Pública\":{\"almacenamiento\":\"Sin restricción, previa autorización de publicación.\",\"transmision\":\"Sin restricción.\",\"impresion\":\"Sin restricción.\",\"mediosRemovibles\":\"Sin restricción.\",\"eliminacion\":\"Sin requisito especial.\",\"referencia\":\"NC Anexo 1 – Pública\"}}",
+      "tipo": "JSON",
+      "fuente": "NC 4.6 y Anexo 1 / RF-22 (AJUSTAR al texto oficial)",
+      "descripcion": "Reglas de etiquetado y manejo que la app muestra al usuario según el nivel."
+    },
+    {
+      "clave": "METODO_BAJA_POR_NIVEL",
+      "valor": "{\"Confidencial\":\"Destrucción segura y certificada\",\"Reservado\":\"Destrucción segura con registro\",\"Uso Interno\":\"Eliminación por canales corporativos\",\"Pública\":\"Eliminación por canales corporativos\"}",
+      "tipo": "JSON",
+      "fuente": "RN-11; NC Anexo 1",
+      "descripcion": "Método de eliminación exigido por nivel."
+    },
+    {
+      "clave": "CERTIFICADO_OBLIGATORIO_NIVELES",
+      "valor": "[\"Confidencial\"]",
+      "tipo": "JSON",
+      "fuente": "RN-11; RF-34",
+      "descripcion": "Niveles cuya baja exige certificado de destrucción adjunto. Además es obligatorio siempre que la baja la ejecute un proveedor."
+    },
+    {
+      "clave": "CAMPOS_EI_HABILITADOS",
+      "valor": "false",
+      "tipo": "Booleano",
+      "fuente": "RF-06",
+      "descripcion": "Habilita en la app los campos sugeridos por estándares internacionales (fase 2)."
+    },
+    {
+      "clave": "CATEGORIAS_TECNOLOGICAS",
+      "valor": "[\"Software / aplicación\",\"Hardware / equipamiento\",\"Infraestructura de comunicaciones\",\"Servicio (TI o de tercero)\"]",
+      "tipo": "JSON",
+      "fuente": "RF-45; CAT F06",
+      "descripcion": "Categorías que exigen ID de CMDB."
+    },
+    {
+      "clave": "ALOJAMIENTOS_EXTERNOS",
+      "valor": "[\"Nube pública – SaaS\",\"Nube pública – IaaS / PaaS\",\"Proveedor (hosting / outsourcing)\",\"Dependencias físicas de tercero\"]",
+      "tipo": "JSON",
+      "fuente": "RF-09",
+      "descripcion": "Tipos de alojamiento que exigen tercero y país."
+    },
+    {
+      "clave": "HISTORIAL_RETENCION_ANIOS",
+      "valor": "5",
+      "tipo": "Número",
+      "fuente": "RNF-07",
+      "descripcion": "Retención mínima de la lista HistorialClasificacion."
+    },
+    {
+      "clave": "UMBRAL_PERMISOS_UNICOS_ALERTA",
+      "valor": "4000",
+      "tipo": "Número",
+      "fuente": "RNF-11",
+      "descripcion": "Cantidad de elementos con permisos únicos a partir de la cual FL-12 alerta al CISO y a TI."
+    },
+    {
+      "clave": "CUENTA_SERVICIO_UPN",
+      "valor": "svc-sgsi-inventario@rentanacional.cl",
+      "tipo": "Texto",
+      "fuente": "RNF-04",
+      "descripcion": "Cuenta de servicio que ejecuta los flujos (AJUSTAR)."
+    },
+    {
+      "clave": "GRUPO_CISO_SPID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id SharePoint de SGSI-INV-CISO (lo completa scripts/04)."
+    },
+    {
+      "clave": "GRUPO_DPO_SPID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id SharePoint de SGSI-INV-DPO."
+    },
+    {
+      "clave": "GRUPO_RIESGOS_SPID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id SharePoint de SGSI-INV-RIESGOS."
+    },
+    {
+      "clave": "GRUPO_CSI_SPID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id SharePoint de SGSI-INV-CSI."
+    },
+    {
+      "clave": "GRUPO_AUDITORIA_SPID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id SharePoint de SGSI-INV-AUDITORIA."
+    },
+    {
+      "clave": "GRUPO_CUSTODIOS_SPID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id SharePoint de SGSI-INV-CUSTODIOS."
+    },
+    {
+      "clave": "ROL_EDICION_ID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id del nivel de permiso 'SGSI Editar sin eliminar' (lo completa scripts/04)."
+    },
+    {
+      "clave": "ROL_LECTURA_ID",
+      "valor": "",
+      "tipo": "Número",
+      "fuente": "Sección 13",
+      "descripcion": "Id del nivel de permiso 'Leer'."
+    },
+    {
+      "clave": "CORREO_CISO",
+      "valor": "ciso@rentanacional.cl",
+      "tipo": "Texto",
+      "fuente": "RF-31",
+      "descripcion": "Buzón del CISO para escalamientos (AJUSTAR)."
+    },
+    {
+      "clave": "CORREO_DPO",
+      "valor": "dpo@rentanacional.cl",
+      "tipo": "Texto",
+      "fuente": "RF-41",
+      "descripcion": "Buzón del DPO (AJUSTAR)."
+    },
+    {
+      "clave": "CORREO_RIESGOS",
+      "valor": "riesgos@rentanacional.cl",
+      "tipo": "Texto",
+      "fuente": "RF-27",
+      "descripcion": "Buzón de la Gerencia de Riesgos y Cumplimiento (AJUSTAR)."
+    },
+    {
+      "clave": "CORREO_PERSONAS",
+      "valor": "personas@rentanacional.cl",
+      "tipo": "Texto",
+      "fuente": "RF-50",
+      "descripcion": "Buzón de la Gerencia de Personas (AJUSTAR)."
+    },
+    {
+      "clave": "TEAMS_CANAL_SGSI",
+      "valor": "",
+      "tipo": "JSON",
+      "fuente": "RF-47",
+      "descripcion": "{\"teamId\":\"…\",\"channelId\":\"…\"} del canal SGSI para avisos."
+    },
+    {
+      "clave": "GRUPO_CISO_ENTRAID",
+      "valor": "",
+      "tipo": "Texto",
+      "fuente": "Sección 13",
+      "descripcion": "Id de Entra ID de SGSI-INV-CISO (lo completa scripts/05); autoriza acciones de administración en flujos instantáneos."
+    },
+    {
+      "clave": "GRUPO_DPO_ENTRAID",
+      "valor": "",
+      "tipo": "Texto",
+      "fuente": "Sección 13",
+      "descripcion": "Id de Entra ID de SGSI-INV-DPO."
+    },
+    {
+      "clave": "GRUPO_CSI_ENTRAID",
+      "valor": "",
+      "tipo": "Texto",
+      "fuente": "Sección 13",
+      "descripcion": "Id de Entra ID de SGSI-INV-CSI (aprobadores de excepciones)."
+    },
+    {
+      "clave": "GRUPO_RIESGOS_ENTRAID",
+      "valor": "",
+      "tipo": "Texto",
+      "fuente": "Sección 13",
+      "descripcion": "Id de Entra ID de SGSI-INV-RIESGOS (FL-10b registra ID de riesgo)."
+    },
+    {
+      "clave": "GRUPO_AUDITORIA_ENTRAID",
+      "valor": "",
+      "tipo": "Texto",
+      "fuente": "Sección 13",
+      "descripcion": "Id de Entra ID de SGSI-INV-AUDITORIA."
+    }
+  ]
+}

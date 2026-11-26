@@ -1,0 +1,30 @@
+// =====================================================================================================
+//  Seguridad por filas (RLS) – replica la regla de permisos de SharePoint (sección 13, RF-42, CA-10)
+//  Rol único "Inventario" aplicado a TODOS los consumidores (Dueños y transversales).
+//  Filtro sobre la tabla Activos; Excepciones, Revisiones y Alertas se filtran por la relación con Activos
+//  (dirección de filtro: Activos → tablas relacionadas, "aplicar filtro de seguridad en ambas direcciones" desactivado).
+//  La tabla Pertenencia NO se relaciona con el modelo y se oculta.
+// =====================================================================================================
+
+// Rol: Inventario   ·   Tabla: Activos
+VAR _upn = LOWER ( USERPRINCIPALNAME () )
+VAR _transversal =
+    NOT ISEMPTY ( FILTER ( Pertenencia, Pertenencia[RN_UPN] = _upn && Pertenencia[RN_Transversal] = TRUE () ) )
+VAR _misGerencias =
+    SELECTCOLUMNS (
+        FILTER ( Pertenencia, Pertenencia[RN_UPN] = _upn && Pertenencia[RN_Transversal] = FALSE () ),
+        "Clave", Pertenencia[RN_EntidadCodigo] & "|" & Pertenencia[RN_GerenciaCodigo]
+    )
+RETURN
+    _transversal
+        || ( Activos[EntidadCodigo] & "|" & Activos[GerenciaCodigo] ) IN _misGerencias
+        // Activo compartido: lo ve también la gerencia contraparte (RN-13). El grupo de la contraparte es AMBAS-<GER> o <ENT>-<GER>.
+        || ( Activos[EntidadCodigo] = "AMBAS"
+             && ( ( "AMBAS|" & Activos[ContraparteCodigo] ) IN _misGerencias
+                  || ( "RNSG|" & Activos[ContraparteCodigo] ) IN _misGerencias
+                  || ( "RNSV|" & Activos[ContraparteCodigo] ) IN _misGerencias ) )
+
+// Rol: Inventario   ·   Tabla: Pertenencia   (cada usuario solo ve sus propias filas)
+// [RN_UPN] = LOWER ( USERPRINCIPALNAME () )
+
+// Prueba CA-10: Modelado → Ver como → Otro usuario = <dueño RNSG> + rol Inventario → solo debe ver su entidad/gerencia.
