@@ -24,7 +24,7 @@ npm test                              # reglas de negocio (23 pruebas)
 npm run validar                       # restricciones de SharePoint y coherencia app/flujos/PowerShell
 python3 tools/build_plantilla_carga.py   # regenera la plantilla Excel desde el catálogo
 ```
-Despliegue: seguir [`docs/02_Manual_de_Instalacion.md`](docs/02_Manual_de_Instalacion.md).
+Implementación: seguir el [manual paso a paso](docs/07_Manual_de_Implementacion_Paso_a_Paso.md) (fases F0 a F4, con verificaciones, evidencias y RACI). Referencia técnica de comandos: [`docs/02_Manual_de_Instalacion.md`](docs/02_Manual_de_Instalacion.md).
 
 ## Decisiones de diseño relevantes
 Ver [`docs/01_Diseno_de_la_Solucion.md`](docs/01_Diseno_de_la_Solucion.md) §4–5. En resumen: el alta se hace con la cuenta de servicio para que ningún activo sea visible fuera de su gerencia ni por un instante (CA-02); las columnas calculadas y de estado están protegidas por un control detectivo-correctivo; las revisiones no consumen permisos únicos; y se identificó la decisión **D-09** (capacidad de Dataverse para usar soluciones DEV/TEST/PROD con licencias E3).

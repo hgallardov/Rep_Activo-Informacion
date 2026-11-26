@@ -1,5 +1,7 @@
 # 02 · Manual de instalación (runbook de despliegue)
 
+> Referencia técnica resumida. Para la implementación completa por fases, con responsables, verificaciones y evidencias, use [07 · Manual de implementación paso a paso](07_Manual_de_Implementacion_Paso_a_Paso.md).
+
 Ejecutar en orden en **DEV**, luego **TEST** y finalmente **PROD** (fases F0–F1 del plan, sección 17). Cada paso deja log en `logs/` (excluido de Git): consérvelo como evidencia del despliegue.
 
 ## 0. Requisitos previos (F0)
