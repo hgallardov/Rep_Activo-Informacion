@@ -1,0 +1,45 @@
+{
+  "$comment": "Parámetros de despliegue por ambiente. Copiar este archivo como solution.config.<AMBIENTE>.json y ajustar. No contiene secretos: la autenticación es interactiva o con certificado de la app registrada por TI.",
+  "ambiente": "DEV",
+  "tenant": {
+    "nombre": "rentanacional",
+    "dominio": "rentanacional.cl",
+    "tenantId": "00000000-0000-0000-0000-000000000000",
+    "adminUrl": "https://rentanacional-admin.sharepoint.com"
+  },
+  "pnp": {
+    "clientId": "00000000-0000-0000-0000-000000000000",
+    "$comment": "App registrada de Entra ID para PnP PowerShell (Register-PnPEntraIDAppForInteractiveLogin). Obligatoria desde sept-2024."
+  },
+  "sitio": {
+    "url": "https://rentanacional.sharepoint.com/sites/SGSI-InventarioActivos",
+    "titulo": "SGSI – Inventario de Activos",
+    "descripcion": "Inventario corporativo y clasificación de activos de información RNSG y RNSV (ER[ZZ].GR_1.0(2026)). Activo clasificado como Reservado.",
+    "lcid": 3082,
+    "zonaHoraria": 56,
+    "propietarios": ["ciso@rentanacional.cl", "svc-sgsi-inventario@rentanacional.cl"],
+    "etiquetaSensibilidad": "Reservado",
+    "etiquetaSensibilidadId": "",
+    "etiquetaRetencion": "SGSI-Inventario-5A"
+  },
+  "cuentaServicio": "svc-sgsi-inventario@rentanacional.cl",
+  "grupos": {
+    "transversales": [
+      { "nombre": "SGSI-INV-CISO", "descripcion": "Administrador funcional del inventario (CISO y equipo SGSI)", "rol": "Control total funcional", "parametro": "GRUPO_CISO_SPID" },
+      { "nombre": "SGSI-INV-DPO", "descripcion": "Delegado de Protección de Datos", "rol": "Lectura", "parametro": "GRUPO_DPO_SPID" },
+      { "nombre": "SGSI-INV-RIESGOS", "descripcion": "Gerencia de Riesgos y Cumplimiento", "rol": "Lectura", "parametro": "GRUPO_RIESGOS_SPID" },
+      { "nombre": "SGSI-INV-CSI", "descripcion": "Comité de Seguridad de la Información", "rol": "Lectura", "parametro": "GRUPO_CSI_SPID" },
+      { "nombre": "SGSI-INV-AUDITORIA", "descripcion": "Auditoría Interna (solo lectura)", "rol": "Lectura", "parametro": "GRUPO_AUDITORIA_SPID" },
+      { "nombre": "SGSI-INV-CUSTODIOS", "descripcion": "Custodios (TI u otras áreas)", "rol": "Lectura", "parametro": "GRUPO_CUSTODIOS_SPID" },
+      { "nombre": "SGSI-INV-ADMIN-TI", "descripcion": "Administración técnica de la plataforma", "rol": "Sin acceso a datos por defecto" },
+      { "nombre": "SGSI-INV-PERSONAS", "descripcion": "Gerencia de Personas (titulares de cargos)", "rol": "Edición lista Cargos" }
+    ],
+    "plantillaEdicion": "SGSI-INV-{ENT}-{GER}-EDIT"
+  },
+  "powerPlatform": {
+    "entornos": { "DEV": "RN-SGSI-Inventario-DEV", "TEST": "RN-SGSI-Inventario-TEST", "PROD": "RN-SGSI-Inventario-PROD" },
+    "solucion": "RNInventarioActivos",
+    "prefijoPublicador": "rnsgsi",
+    "politicaDLP": "RN-SGSI-Inventario-Solo-M365"
+  }
+}

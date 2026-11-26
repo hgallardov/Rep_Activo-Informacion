@@ -1,0 +1,1155 @@
+{
+  "$comment": "Fuente única de verdad de la lista 'Activos' (Anexo A del ER[ZZ].GR_1.0(2026) + columnas técnicas). La consumen: scripts/03-New-InventoryLists.ps1, tools/build_plantilla_carga.py, scripts/06-Import-InitialInventory.ps1 y la documentación. 'origen': NI = Normativa Interna, EI = Estándar Internacional, CALC = calculado por flujo, VAL = validación, TEC = técnico de la solución. 'fase': 1 = visible desde el MVP; 2 = campo EI habilitable por parámetro (RF-06). 'requerido': regla de obligatoriedad aplicada por la app y por FL-02 (no se marca 'Required' en SharePoint para permitir borradores, RF-10).",
+  "version": "1.0",
+  "lista": "Activos",
+  "campos": [
+    {
+      "codigo": "F61",
+      "interno": "RN_Entidad",
+      "nombre": "Entidad",
+      "tipo": "Lookup",
+      "lookupLista": "Entidades",
+      "lookupCampo": "Title",
+      "origen": "NI",
+      "grupo": "1-Identificación",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1
+    },
+    {
+      "codigo": "F01",
+      "interno": "Title",
+      "nombre": "ID del activo",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "1-Identificación",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "escribe": "flujo",
+      "fase": 1,
+      "nota": "Formato AI-[ENTIDAD]-[GERENCIA]-[correlativo 5 dígitos]. Lo genera FL-01; no editable (RF-07, RN-01)."
+    },
+    {
+      "codigo": "F02",
+      "interno": "RN_Nombre",
+      "nombre": "Nombre del activo",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "1-Identificación",
+      "requerido": "Obligatorio",
+      "fase": 1
+    },
+    {
+      "codigo": "F03",
+      "interno": "RN_Descripcion",
+      "nombre": "Descripción (contenido o función)",
+      "tipo": "Note",
+      "origen": "NI",
+      "grupo": "1-Identificación",
+      "requerido": "Obligatorio",
+      "fase": 1
+    },
+    {
+      "codigo": "F04",
+      "interno": "RN_Categoria",
+      "nombre": "Categoría",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "1-Identificación",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1,
+      "opciones": [
+        "Información / datos",
+        "Software / aplicación",
+        "Hardware / equipamiento",
+        "Servicio (TI o de tercero)",
+        "Infraestructura de comunicaciones",
+        "Instalaciones",
+        "Personas / conocimiento",
+        "Documentación física"
+      ],
+      "nota": "Ajustar a las categorías del Anexo 1 de la Norma de Gestión si difieren."
+    },
+    {
+      "codigo": "F05",
+      "interno": "RN_Subtipo",
+      "nombre": "Subtipo de activo",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "1-Identificación",
+      "requerido": "Recomendado",
+      "fase": 2,
+      "opciones": [
+        "Base de datos",
+        "Repositorio documental",
+        "Archivo físico",
+        "Aplicación de negocio",
+        "Software base / middleware",
+        "Servicio SaaS",
+        "Servicio IaaS / PaaS",
+        "Servidor",
+        "Estación de trabajo",
+        "Dispositivo móvil",
+        "Equipo de red / seguridad",
+        "Medio removible",
+        "Otro"
+      ]
+    },
+    {
+      "codigo": "F06",
+      "interno": "RN_IdCMDB",
+      "nombre": "ID en inventario técnico de TI (CMDB)",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "1-Identificación",
+      "requerido": "Condicional",
+      "condicion": "Categoría en (Software / aplicación, Hardware / equipamiento, Infraestructura de comunicaciones, Servicio (TI o de tercero))",
+      "fase": 1
+    },
+    {
+      "codigo": "F07",
+      "interno": "RN_Proceso",
+      "nombre": "Proceso de negocio que soporta",
+      "tipo": "Lookup",
+      "lookupLista": "Procesos",
+      "lookupCampo": "Title",
+      "origen": "NI",
+      "grupo": "2-Responsables",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1
+    },
+    {
+      "codigo": "F08",
+      "interno": "RN_Gerencia",
+      "nombre": "Gerencia responsable",
+      "tipo": "Lookup",
+      "lookupLista": "Gerencias",
+      "lookupCampo": "Title",
+      "origen": "NI",
+      "grupo": "2-Responsables",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1
+    },
+    {
+      "codigo": "F08b",
+      "interno": "RN_GerenciaContraparte",
+      "nombre": "Gerencia contraparte (activo compartido)",
+      "tipo": "Lookup",
+      "lookupLista": "Gerencias",
+      "lookupCampo": "Title",
+      "origen": "TEC",
+      "grupo": "2-Responsables",
+      "requerido": "Condicional",
+      "condicion": "Entidad = Ambas (RF-08)",
+      "fase": 1
+    },
+    {
+      "codigo": "F09",
+      "interno": "RN_DuenoCargo",
+      "nombre": "Dueño del activo (cargo)",
+      "tipo": "Lookup",
+      "lookupLista": "Cargos",
+      "lookupCampo": "Title",
+      "origen": "NI",
+      "grupo": "2-Responsables",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1
+    },
+    {
+      "codigo": "F10",
+      "interno": "RN_CustodioCargo",
+      "nombre": "Custodio (cargo / área)",
+      "tipo": "Lookup",
+      "lookupLista": "Cargos",
+      "lookupCampo": "Title",
+      "origen": "NI",
+      "grupo": "2-Responsables",
+      "requerido": "Condicional",
+      "condicion": "Si hay delegación de administración",
+      "fase": 1
+    },
+    {
+      "codigo": "F11",
+      "interno": "RN_FuncionCriticaBIA",
+      "nombre": "Función crítica soportada / ID en BIA",
+      "tipo": "Text",
+      "origen": "EI",
+      "grupo": "2-Responsables",
+      "requerido": "Recomendado",
+      "fase": 2
+    },
+    {
+      "codigo": "F12",
+      "interno": "RN_Dependencias",
+      "nombre": "Activos relacionados o dependencias (IDs)",
+      "tipo": "Note",
+      "origen": "EI",
+      "grupo": "2-Responsables",
+      "requerido": "Recomendado",
+      "escribe": "flujo",
+      "fase": 2,
+      "nota": "Resumen de solo lectura; el detalle vive en la lista RelacionesActivos (RF-11)."
+    },
+    {
+      "codigo": "F13",
+      "interno": "RN_IdRiesgo",
+      "nombre": "Dueño del riesgo / ID en matriz de riesgos",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "2-Responsables",
+      "requerido": "Condicional",
+      "condicion": "Activo crítico = Sí (lo registra Riesgos, RF-27)",
+      "fase": 1
+    },
+    {
+      "codigo": "F14",
+      "interno": "RN_Formato",
+      "nombre": "Formato",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "3-Ubicación",
+      "requerido": "Obligatorio",
+      "fase": 1,
+      "opciones": [
+        "Digital estructurado",
+        "Digital no estructurado",
+        "Físico (papel)",
+        "Mixto",
+        "No aplica (equipo o servicio)"
+      ]
+    },
+    {
+      "codigo": "F15",
+      "interno": "RN_Ubicacion",
+      "nombre": "Ubicación (sistema, repositorio, sede o proveedor)",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "3-Ubicación",
+      "requerido": "Obligatorio",
+      "fase": 1
+    },
+    {
+      "codigo": "F16",
+      "interno": "RN_TipoAlojamiento",
+      "nombre": "Tipo de alojamiento",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "3-Ubicación",
+      "requerido": "Recomendado",
+      "fase": 1,
+      "opciones": [
+        "Centro de datos propio",
+        "Nube pública – SaaS",
+        "Nube pública – IaaS / PaaS",
+        "Proveedor (hosting / outsourcing)",
+        "Dependencias físicas propias",
+        "Dependencias físicas de tercero"
+      ],
+      "nota": "Se habilita en fase 1 porque gobierna los campos condicionales de tercero y país (RF-09)."
+    },
+    {
+      "codigo": "F17",
+      "interno": "RN_PaisProcesamiento",
+      "nombre": "País de almacenamiento o procesamiento",
+      "tipo": "Text",
+      "origen": "EI",
+      "grupo": "3-Ubicación",
+      "requerido": "Condicional",
+      "condicion": "Tipo de alojamiento externo (nube o proveedor)",
+      "fase": 1
+    },
+    {
+      "codigo": "F18",
+      "interno": "RN_Confidencialidad",
+      "nombre": "Confidencialidad",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "4-Valoración",
+      "requerido": "Obligatorio",
+      "fase": 1,
+      "opciones": [
+        "Alta",
+        "Media",
+        "Baja"
+      ]
+    },
+    {
+      "codigo": "F19",
+      "interno": "RN_Integridad",
+      "nombre": "Integridad",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "4-Valoración",
+      "requerido": "Obligatorio",
+      "fase": 1,
+      "opciones": [
+        "Alta",
+        "Media",
+        "Baja"
+      ]
+    },
+    {
+      "codigo": "F20",
+      "interno": "RN_Disponibilidad",
+      "nombre": "Disponibilidad",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "4-Valoración",
+      "requerido": "Obligatorio",
+      "fase": 1,
+      "opciones": [
+        "Alta",
+        "Media",
+        "Baja"
+      ]
+    },
+    {
+      "codigo": "F21",
+      "interno": "RN_Critico",
+      "nombre": "Activo crítico",
+      "tipo": "Choice",
+      "origen": "CALC",
+      "grupo": "4-Valoración",
+      "requerido": "Automático",
+      "indexado": true,
+      "escribe": "flujo",
+      "fase": 1,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "nota": "Sí cuando alguna dimensión C-I-D = Alta (RN-03)."
+    },
+    {
+      "codigo": "F22",
+      "interno": "RN_RestriccionesLegales",
+      "nombre": "Restricciones legales o contractuales de divulgación",
+      "tipo": "Note",
+      "origen": "NI",
+      "grupo": "4-Valoración",
+      "requerido": "Condicional",
+      "condicion": "Información confiada por terceros = Sí o existe restricción contractual",
+      "fase": 1
+    },
+    {
+      "codigo": "F23",
+      "interno": "RN_ConfiadaTerceros",
+      "nombre": "¿Información confiada por terceros?",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "4-Valoración",
+      "requerido": "Obligatorio",
+      "fase": 1,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "codigo": "F23b",
+      "interno": "RN_NivelAcordadoTerceros",
+      "nombre": "Nivel acordado con el tercero",
+      "tipo": "Choice",
+      "origen": "TEC",
+      "grupo": "4-Valoración",
+      "requerido": "Condicional",
+      "condicion": "Información confiada por terceros = Sí (RN-08)",
+      "fase": 1,
+      "opciones": [
+        "Confidencial",
+        "Reservado",
+        "Uso Interno",
+        "Pública"
+      ]
+    },
+    {
+      "codigo": "F24",
+      "interno": "RN_Nivel",
+      "nombre": "Nivel de clasificación asignado",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "4-Valoración",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1,
+      "opciones": [
+        "Confidencial",
+        "Reservado",
+        "Uso Interno",
+        "Pública"
+      ]
+    },
+    {
+      "codigo": "F24b",
+      "interno": "RN_NivelEfectivo",
+      "nombre": "Nivel efectivo (reportes)",
+      "tipo": "Choice",
+      "origen": "CALC",
+      "grupo": "4-Valoración",
+      "requerido": "Automático",
+      "indexado": true,
+      "escribe": "flujo",
+      "fase": 1,
+      "opciones": [
+        "Confidencial",
+        "Reservado",
+        "Uso Interno",
+        "Pública"
+      ],
+      "nota": "Igual al nivel asignado; Confidencial si está vacío (RN-06, RF-20)."
+    },
+    {
+      "codigo": "F25",
+      "interno": "RN_NivelMinimo",
+      "nombre": "Nivel mínimo exigido por reglas",
+      "tipo": "Choice",
+      "origen": "CALC",
+      "grupo": "4-Valoración",
+      "requerido": "Automático",
+      "escribe": "flujo",
+      "fase": 1,
+      "opciones": [
+        "Confidencial",
+        "Reservado",
+        "Uso Interno",
+        "Pública"
+      ]
+    },
+    {
+      "codigo": "F26",
+      "interno": "RN_Etiquetado",
+      "nombre": "Etiquetado aplicado",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "4-Valoración",
+      "requerido": "Recomendado",
+      "fase": 2,
+      "opciones": [
+        "Etiqueta Purview aplicada",
+        "Marca manual / rótulo físico",
+        "Pendiente",
+        "No aplica"
+      ]
+    },
+    {
+      "codigo": "F26b",
+      "interno": "RN_EtiquetaPurview",
+      "nombre": "Etiqueta Purview que corresponde",
+      "tipo": "Text",
+      "origen": "CALC",
+      "grupo": "4-Valoración",
+      "requerido": "Automático",
+      "escribe": "flujo",
+      "fase": 1,
+      "nota": "RF-46: mismo nombre y orden que el nivel."
+    },
+    {
+      "codigo": "F27",
+      "interno": "RN_UltimaReclasificacion",
+      "nombre": "Última reclasificación (fecha, nivel anterior, motivo)",
+      "tipo": "Note",
+      "origen": "NI",
+      "grupo": "4-Valoración",
+      "requerido": "Condicional",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F27b",
+      "interno": "RN_MotivoCambio",
+      "nombre": "Motivo del cambio (reclasificación)",
+      "tipo": "Note",
+      "origen": "TEC",
+      "grupo": "4-Valoración",
+      "requerido": "Condicional",
+      "condicion": "Obligatorio si cambia el nivel de un activo ya Vigente (RF-32)",
+      "fase": 1
+    },
+    {
+      "codigo": "F28",
+      "interno": "RN_DatosPersonales",
+      "nombre": "¿Contiene datos personales?",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "5-Datos personales",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "codigo": "F29",
+      "interno": "RN_DatosSensibles",
+      "nombre": "¿Contiene datos sensibles?",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "5-Datos personales",
+      "requerido": "Obligatorio",
+      "fase": 1,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "codigo": "F30",
+      "interno": "RN_IdRAT",
+      "nombre": "Actividad del RAT vinculada (ID)",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "5-Datos personales",
+      "requerido": "Condicional",
+      "condicion": "Datos personales = Sí",
+      "fase": 1
+    },
+    {
+      "codigo": "F31",
+      "interno": "RN_CategoriaTitulares",
+      "nombre": "Categoría de titulares",
+      "tipo": "MultiChoice",
+      "origen": "EI",
+      "grupo": "5-Datos personales",
+      "requerido": "Condicional",
+      "condicion": "Datos personales = Sí",
+      "fase": 2,
+      "opciones": [
+        "Asegurados / contratantes",
+        "Beneficiarios",
+        "Colaboradores",
+        "Postulantes",
+        "Intermediarios / corredores",
+        "Proveedores / contrapartes",
+        "Otros"
+      ]
+    },
+    {
+      "codigo": "F32",
+      "interno": "RN_BaseLicitud",
+      "nombre": "Base de licitud",
+      "tipo": "MultiChoice",
+      "origen": "EI",
+      "grupo": "5-Datos personales",
+      "requerido": "Condicional",
+      "condicion": "Datos personales = Sí",
+      "fase": 2,
+      "opciones": [
+        "Consentimiento",
+        "Ejecución de contrato",
+        "Obligación legal",
+        "Interés vital",
+        "Interés público",
+        "Interés legítimo"
+      ]
+    },
+    {
+      "codigo": "F33",
+      "interno": "RN_VolumenTitulares",
+      "nombre": "Volumen aproximado de titulares",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "5-Datos personales",
+      "requerido": "Condicional",
+      "condicion": "Datos personales = Sí",
+      "fase": 2,
+      "opciones": [
+        "Menos de 1.000",
+        "1.000 a 10.000",
+        "10.001 a 100.000",
+        "Más de 100.000"
+      ]
+    },
+    {
+      "codigo": "F34",
+      "interno": "RN_TransferenciaInternacional",
+      "nombre": "Transferencia internacional",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "5-Datos personales",
+      "requerido": "Condicional",
+      "condicion": "Datos personales = Sí",
+      "fase": 1,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "nota": "Se habilita en fase 1 porque alimenta la bandeja del DPO (RF-40) y FL-10."
+    },
+    {
+      "codigo": "F35",
+      "interno": "RN_Tercero",
+      "nombre": "Tercero involucrado (proveedor o encargado)",
+      "tipo": "Lookup",
+      "lookupLista": "Terceros",
+      "lookupCampo": "Title",
+      "origen": "NI",
+      "grupo": "6-Terceros",
+      "requerido": "Condicional",
+      "condicion": "Alojamiento externo o tercero que trata/administra el activo",
+      "fase": 1
+    },
+    {
+      "codigo": "F36",
+      "interno": "RN_NumeroContrato",
+      "nombre": "N° de contrato / acuerdo de confidencialidad o de encargo",
+      "tipo": "Text",
+      "origen": "EI",
+      "grupo": "6-Terceros",
+      "requerido": "Condicional",
+      "condicion": "Con tercero",
+      "fase": 2
+    },
+    {
+      "codigo": "F37",
+      "interno": "RN_ExternalizadoSignificativo",
+      "nombre": "¿Servicio externalizado significativo?",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "6-Terceros",
+      "requerido": "Condicional",
+      "condicion": "Con tercero (NCG 573)",
+      "fase": 2,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "codigo": "F38",
+      "interno": "RN_ReglasUso",
+      "nombre": "Reglas de uso (referencia)",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Obligatorio",
+      "fase": 1,
+      "nota": "Se precarga con la referencia al Anexo 1 de la Norma de Clasificación del nivel asignado (RF-22)."
+    },
+    {
+      "codigo": "F39",
+      "interno": "RN_CargosAutorizados",
+      "nombre": "Cargos con acceso autorizado",
+      "tipo": "Note",
+      "origen": "NI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Condicional",
+      "condicion": "Obligatorio para Confidencial y Reservado (RF-21)",
+      "fase": 1
+    },
+    {
+      "codigo": "F39b",
+      "interno": "RN_TercerosAutorizados",
+      "nombre": "Terceros con acceso autorizado",
+      "tipo": "Note",
+      "origen": "TEC",
+      "grupo": "7-Controles y uso",
+      "requerido": "Condicional",
+      "condicion": "Obligatorio para Reservado cuando hay tercero (RF-21)",
+      "fase": 1
+    },
+    {
+      "codigo": "F40",
+      "interno": "RN_FechaRevisionAccesos",
+      "nombre": "Fecha última revisión de accesos",
+      "tipo": "DateTime",
+      "origen": "NI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Condicional",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F41",
+      "interno": "RN_ProximaRevisionAccesos",
+      "nombre": "Próxima revisión de accesos",
+      "tipo": "DateTime",
+      "origen": "CALC",
+      "grupo": "7-Controles y uso",
+      "requerido": "Automático",
+      "indexado": true,
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F42",
+      "interno": "RN_CifradoReposo",
+      "nombre": "Cifrado en reposo",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Recomendado",
+      "fase": 2,
+      "opciones": [
+        "Sí",
+        "Parcial",
+        "No",
+        "No aplica"
+      ]
+    },
+    {
+      "codigo": "F43",
+      "interno": "RN_RegistroAccesos",
+      "nombre": "Registro de accesos (logs)",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Recomendado",
+      "fase": 2,
+      "opciones": [
+        "Sí",
+        "Parcial",
+        "No",
+        "No aplica"
+      ]
+    },
+    {
+      "codigo": "F44",
+      "interno": "RN_FrecuenciaRespaldo",
+      "nombre": "Respaldo (frecuencia)",
+      "tipo": "Text",
+      "origen": "EI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Recomendado",
+      "fase": 2
+    },
+    {
+      "codigo": "F45",
+      "interno": "RN_RTORPO",
+      "nombre": "RTO / RPO requeridos",
+      "tipo": "Text",
+      "origen": "EI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Recomendado",
+      "condicion": "Recomendado para activos críticos",
+      "fase": 2
+    },
+    {
+      "codigo": "F46",
+      "interno": "RN_UsoIA",
+      "nombre": "¿Se usa en sistemas de IA?",
+      "tipo": "Choice",
+      "origen": "EI",
+      "grupo": "7-Controles y uso",
+      "requerido": "Recomendado",
+      "fase": 2,
+      "opciones": [
+        "Sí",
+        "No",
+        "En evaluación"
+      ]
+    },
+    {
+      "codigo": "F47",
+      "interno": "RN_FechaAlta",
+      "nombre": "Fecha de alta en inventario",
+      "tipo": "DateTime",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Obligatorio",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F48",
+      "interno": "RN_PeriodoRetencion",
+      "nombre": "Período de retención",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Obligatorio",
+      "fase": 1
+    },
+    {
+      "codigo": "F49",
+      "interno": "RN_FundamentoRetencion",
+      "nombre": "Fundamento del plazo de retención",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Obligatorio",
+      "fase": 1
+    },
+    {
+      "codigo": "F50",
+      "interno": "RN_FinSoporte",
+      "nombre": "Fin de soporte del fabricante",
+      "tipo": "DateTime",
+      "origen": "EI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Condicional",
+      "condicion": "Software / hardware",
+      "fase": 2
+    },
+    {
+      "codigo": "F51",
+      "interno": "RN_FechaUltimaRevision",
+      "nombre": "Fecha de última revisión",
+      "tipo": "DateTime",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Obligatorio",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F52",
+      "interno": "RN_ResponsableUltimaRevision",
+      "nombre": "Responsable de la última revisión",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Obligatorio",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F53",
+      "interno": "RN_ProximaRevision",
+      "nombre": "Próxima revisión",
+      "tipo": "DateTime",
+      "origen": "CALC",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Automático",
+      "indexado": true,
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F54",
+      "interno": "RN_Estado",
+      "nombre": "Estado del activo",
+      "tipo": "Choice",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Obligatorio",
+      "indexado": true,
+      "fase": 1,
+      "opciones": [
+        "Borrador",
+        "En validación",
+        "Observado",
+        "Vigente",
+        "En revisión",
+        "En traspaso",
+        "En baja",
+        "Dado de baja"
+      ],
+      "default": "Borrador"
+    },
+    {
+      "codigo": "F55",
+      "interno": "RN_DatosBaja",
+      "nombre": "Baja: fecha, método y N° de certificado",
+      "tipo": "Note",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Condicional",
+      "condicion": "Estado = En baja / Dado de baja",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F56",
+      "interno": "RN_ExcepcionVigente",
+      "nombre": "Excepción vigente (N° de registro)",
+      "tipo": "Text",
+      "origen": "NI",
+      "grupo": "8-Ciclo de vida",
+      "requerido": "Condicional",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F57",
+      "interno": "RN_ValidacionCISO",
+      "nombre": "Validación CISO",
+      "tipo": "Choice",
+      "origen": "VAL",
+      "grupo": "9-Validación",
+      "requerido": "Obligatorio",
+      "escribe": "flujo",
+      "fase": 1,
+      "opciones": [
+        "Pendiente",
+        "Validado",
+        "Observado"
+      ],
+      "default": "Pendiente"
+    },
+    {
+      "codigo": "F58",
+      "interno": "RN_ValidacionDPO",
+      "nombre": "Validación DPO",
+      "tipo": "Choice",
+      "origen": "VAL",
+      "grupo": "9-Validación",
+      "requerido": "Condicional",
+      "condicion": "Datos personales = Sí",
+      "escribe": "flujo",
+      "fase": 1,
+      "opciones": [
+        "No aplica",
+        "Pendiente",
+        "Validado",
+        "Observado"
+      ],
+      "default": "No aplica"
+    },
+    {
+      "codigo": "F59",
+      "interno": "RN_Alertas",
+      "nombre": "Alertas",
+      "tipo": "Note",
+      "origen": "CALC",
+      "grupo": "9-Validación",
+      "requerido": "Automático",
+      "escribe": "flujo",
+      "fase": 1
+    },
+    {
+      "codigo": "F60",
+      "interno": "RN_Observaciones",
+      "nombre": "Observaciones",
+      "tipo": "Note",
+      "origen": "NI",
+      "grupo": "9-Validación",
+      "requerido": "Opcional",
+      "fase": 1
+    },
+    {
+      "codigo": "T01",
+      "interno": "RN_Correlativo",
+      "nombre": "Correlativo",
+      "tipo": "Number",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo"
+    },
+    {
+      "codigo": "T02",
+      "interno": "RN_DuenoPersona",
+      "nombre": "Titular del cargo Dueño",
+      "tipo": "User",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "indexado": true,
+      "escribe": "flujo",
+      "nota": "Copia desde Cargos; la sincroniza FL-09/FL-14 (RN-12)."
+    },
+    {
+      "codigo": "T03",
+      "interno": "RN_CustodioPersona",
+      "nombre": "Titular del cargo Custodio (UPN)",
+      "tipo": "Text",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo",
+      "nota": "Se guarda el UPN (texto) para no superar el umbral de 12 columnas de búsqueda/persona por consulta."
+    },
+    {
+      "codigo": "T04",
+      "interno": "RN_DelegadoRegistro",
+      "nombre": "Delegado de registro",
+      "tipo": "User",
+      "origen": "TEC",
+      "grupo": "Técnico"
+    },
+    {
+      "codigo": "T05",
+      "interno": "RN_DeclaradoPor",
+      "nombre": "Declarado por (UPN)",
+      "tipo": "Text",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo",
+      "nota": "Se guarda el UPN (texto) para no superar el umbral de 12 columnas de búsqueda/persona por consulta."
+    },
+    {
+      "codigo": "T06",
+      "interno": "RN_FechaDeclaracion",
+      "nombre": "Fecha de declaración",
+      "tipo": "DateTime",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo"
+    },
+    {
+      "codigo": "T07",
+      "interno": "RN_AlertasBloqueantes",
+      "nombre": "Tiene alertas bloqueantes",
+      "tipo": "Boolean",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "indexado": true,
+      "escribe": "flujo"
+    },
+    {
+      "codigo": "T08",
+      "interno": "RN_ClavePermisos",
+      "nombre": "Clave de permisos aplicada",
+      "tipo": "Text",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo",
+      "nota": "ENTIDAD|GERENCIA|CONTRAPARTE|CUSTODIO; si cambia, FL-01 reasigna permisos."
+    },
+    {
+      "codigo": "T09",
+      "interno": "RN_Version",
+      "nombre": "Versión de clasificación",
+      "tipo": "Number",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo"
+    },
+    {
+      "codigo": "T10",
+      "interno": "RN_ComentarioValidacion",
+      "nombre": "Último comentario de validación",
+      "tipo": "Note",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo"
+    },
+    {
+      "codigo": "T11",
+      "interno": "RN_InstantaneaClasif",
+      "nombre": "Instantánea de clasificación",
+      "tipo": "Note",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo",
+      "nota": "JSON con Nivel|Estado|Dueño|Custodio vigentes; FL-04 la compara para detectar cambios."
+    },
+    {
+      "codigo": "T12",
+      "interno": "RN_SolicitudAccion",
+      "nombre": "Solicitud de acción",
+      "tipo": "Choice",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "opciones": [
+        "Ninguna",
+        "Declarar",
+        "Reclasificar",
+        "Traspasar",
+        "Dar de baja",
+        "Revisión integral",
+        "Revisión de accesos"
+      ],
+      "default": "Ninguna",
+      "nota": "La app escribe la acción solicitada; el flujo correspondiente la ejecuta y la devuelve a 'Ninguna'."
+    },
+    {
+      "codigo": "T13",
+      "interno": "RN_CargoReceptor",
+      "nombre": "Cargo receptor (ID en Cargos)",
+      "tipo": "Number",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "nota": "Número en vez de búsqueda por el umbral de 12 columnas de búsqueda."
+    },
+    {
+      "codigo": "T14",
+      "interno": "RN_OrigenCarga",
+      "nombre": "Origen del registro",
+      "tipo": "Choice",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "opciones": [
+        "Aplicación",
+        "Carga masiva",
+        "Migración inicial"
+      ],
+      "default": "Aplicación"
+    },
+    {
+      "codigo": "T15",
+      "interno": "RN_HistorialResumen",
+      "nombre": "Historial resumido",
+      "tipo": "Note",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo",
+      "nota": "Últimos 20 eventos de HistorialClasificacion; permite al Dueño consultar el historial (RF-35) sin dar lectura transversal de la bitácora."
+    },
+    {
+      "codigo": "T16",
+      "interno": "RN_ResultadoRevision",
+      "nombre": "Resultado de la revisión en curso",
+      "tipo": "Note",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "nota": "Lo escribe el Dueño en la app; FL-05/FL-06 lo trasladan a la lista Revisiones."
+    },
+    {
+      "codigo": "T17",
+      "interno": "RN_RevisionConCambios",
+      "nombre": "La revisión tuvo cambios",
+      "tipo": "Boolean",
+      "origen": "TEC",
+      "grupo": "Técnico"
+    },
+    {
+      "codigo": "T18",
+      "interno": "RN_AccesosRetirados",
+      "nombre": "Accesos retirados en la revisión",
+      "tipo": "Number",
+      "origen": "TEC",
+      "grupo": "Técnico"
+    },
+    {
+      "codigo": "T19",
+      "interno": "RN_BajaMetodo",
+      "nombre": "Baja – método de eliminación",
+      "tipo": "Choice",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "opciones": [
+        "Destrucción segura y certificada",
+        "Destrucción segura con registro",
+        "Eliminación por canales corporativos"
+      ]
+    },
+    {
+      "codigo": "T20",
+      "interno": "RN_BajaPorProveedor",
+      "nombre": "Baja – ejecutada por proveedor",
+      "tipo": "Boolean",
+      "origen": "TEC",
+      "grupo": "Técnico"
+    },
+    {
+      "codigo": "T21",
+      "interno": "RN_BajaNumeroCertificado",
+      "nombre": "Baja – N° de certificado",
+      "tipo": "Text",
+      "origen": "TEC",
+      "grupo": "Técnico"
+    },
+    {
+      "codigo": "T22",
+      "interno": "RN_BajaFechaEjecucion",
+      "nombre": "Baja – fecha de ejecución",
+      "tipo": "DateTime",
+      "origen": "TEC",
+      "grupo": "Técnico"
+    },
+    {
+      "codigo": "T23",
+      "interno": "RN_FechaEnvioValidacion",
+      "nombre": "Fecha de envío a validación",
+      "tipo": "DateTime",
+      "origen": "TEC",
+      "grupo": "Técnico",
+      "escribe": "flujo",
+      "nota": "Base para recordatorios y escalamiento de validación (RF-25)."
+    }
+  ]
+}

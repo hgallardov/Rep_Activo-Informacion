@@ -1,0 +1,4 @@
+Title;RN_Codigo;RN_RazonSocial;RN_RUT;RN_GrupoLectores;RN_EsCompartida;RN_Activa
+Seguros Generales;RNSG;Renta Nacional Compañía de Seguros Generales S.A.;AJUSTAR;SGSI-INV-RNSG-LECTORES;false;true
+Seguros de Vida;RNSV;Renta Nacional Compañía de Seguros de Vida S.A.;AJUSTAR;SGSI-INV-RNSV-LECTORES;false;true
+Ambas;AMBAS;Activo compartido RNSG y RNSV;;;true;true

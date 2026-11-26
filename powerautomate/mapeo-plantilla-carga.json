@@ -1,0 +1,323 @@
+{
+  "tabla": "tblActivos",
+  "columnas": [
+    {
+      "encabezado": "F61 Entidad",
+      "interno": "RN_Entidad",
+      "tipo": "Lookup",
+      "lookupLista": "Entidades"
+    },
+    {
+      "encabezado": "F02 Nombre del activo",
+      "interno": "RN_Nombre",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F03 Descripción (contenido o función)",
+      "interno": "RN_Descripcion",
+      "tipo": "Note",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F04 Categoría",
+      "interno": "RN_Categoria",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F05 Subtipo de activo",
+      "interno": "RN_Subtipo",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F06 ID en inventario técnico de TI (CMDB)",
+      "interno": "RN_IdCMDB",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F07 Proceso de negocio que soporta",
+      "interno": "RN_Proceso",
+      "tipo": "Lookup",
+      "lookupLista": "Procesos"
+    },
+    {
+      "encabezado": "F08 Gerencia responsable",
+      "interno": "RN_Gerencia",
+      "tipo": "Lookup",
+      "lookupLista": "Gerencias"
+    },
+    {
+      "encabezado": "F08b Gerencia contraparte (activo compartido)",
+      "interno": "RN_GerenciaContraparte",
+      "tipo": "Lookup",
+      "lookupLista": "Gerencias"
+    },
+    {
+      "encabezado": "F09 Dueño del activo (cargo)",
+      "interno": "RN_DuenoCargo",
+      "tipo": "Lookup",
+      "lookupLista": "Cargos"
+    },
+    {
+      "encabezado": "F10 Custodio (cargo - área)",
+      "interno": "RN_CustodioCargo",
+      "tipo": "Lookup",
+      "lookupLista": "Cargos"
+    },
+    {
+      "encabezado": "F11 Función crítica soportada - ID en BIA",
+      "interno": "RN_FuncionCriticaBIA",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F13 Dueño del riesgo - ID en matriz de riesgos",
+      "interno": "RN_IdRiesgo",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F14 Formato",
+      "interno": "RN_Formato",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F15 Ubicación (sistema, repositorio, sede o proveedor)",
+      "interno": "RN_Ubicacion",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F16 Tipo de alojamiento",
+      "interno": "RN_TipoAlojamiento",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F17 País de almacenamiento o procesamiento",
+      "interno": "RN_PaisProcesamiento",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F18 Confidencialidad",
+      "interno": "RN_Confidencialidad",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F19 Integridad",
+      "interno": "RN_Integridad",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F20 Disponibilidad",
+      "interno": "RN_Disponibilidad",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F22 Restricciones legales o contractuales de divulgación",
+      "interno": "RN_RestriccionesLegales",
+      "tipo": "Note",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F23 ¿Información confiada por terceros?",
+      "interno": "RN_ConfiadaTerceros",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F23b Nivel acordado con el tercero",
+      "interno": "RN_NivelAcordadoTerceros",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F24 Nivel de clasificación asignado",
+      "interno": "RN_Nivel",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F26 Etiquetado aplicado",
+      "interno": "RN_Etiquetado",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F27b Motivo del cambio (reclasificación)",
+      "interno": "RN_MotivoCambio",
+      "tipo": "Note",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F28 ¿Contiene datos personales?",
+      "interno": "RN_DatosPersonales",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F29 ¿Contiene datos sensibles?",
+      "interno": "RN_DatosSensibles",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F30 Actividad del RAT vinculada (ID)",
+      "interno": "RN_IdRAT",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F31 Categoría de titulares",
+      "interno": "RN_CategoriaTitulares",
+      "tipo": "MultiChoice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F32 Base de licitud",
+      "interno": "RN_BaseLicitud",
+      "tipo": "MultiChoice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F33 Volumen aproximado de titulares",
+      "interno": "RN_VolumenTitulares",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F34 Transferencia internacional",
+      "interno": "RN_TransferenciaInternacional",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F35 Tercero involucrado (proveedor o encargado)",
+      "interno": "RN_Tercero",
+      "tipo": "Lookup",
+      "lookupLista": "Terceros"
+    },
+    {
+      "encabezado": "F36 N° de contrato - acuerdo de confidencialidad o de encargo",
+      "interno": "RN_NumeroContrato",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F37 ¿Servicio externalizado significativo?",
+      "interno": "RN_ExternalizadoSignificativo",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F38 Reglas de uso (referencia)",
+      "interno": "RN_ReglasUso",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F39 Cargos con acceso autorizado",
+      "interno": "RN_CargosAutorizados",
+      "tipo": "Note",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F39b Terceros con acceso autorizado",
+      "interno": "RN_TercerosAutorizados",
+      "tipo": "Note",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F40 Fecha última revisión de accesos (migración)",
+      "interno": "RN_FechaRevisionAccesos",
+      "tipo": "DateTime",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F42 Cifrado en reposo",
+      "interno": "RN_CifradoReposo",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F43 Registro de accesos (logs)",
+      "interno": "RN_RegistroAccesos",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F44 Respaldo (frecuencia)",
+      "interno": "RN_FrecuenciaRespaldo",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F45 RTO - RPO requeridos",
+      "interno": "RN_RTORPO",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F46 ¿Se usa en sistemas de IA?",
+      "interno": "RN_UsoIA",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F47 Fecha de alta en inventario (migración)",
+      "interno": "RN_FechaAlta",
+      "tipo": "DateTime",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F48 Período de retención",
+      "interno": "RN_PeriodoRetencion",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F49 Fundamento del plazo de retención",
+      "interno": "RN_FundamentoRetencion",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F50 Fin de soporte del fabricante",
+      "interno": "RN_FinSoporte",
+      "tipo": "DateTime",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F51 Fecha de última revisión (migración)",
+      "interno": "RN_FechaUltimaRevision",
+      "tipo": "DateTime",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F52 Responsable de la última revisión (migración)",
+      "interno": "RN_ResponsableUltimaRevision",
+      "tipo": "Text",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F54 Estado del activo",
+      "interno": "RN_Estado",
+      "tipo": "Choice",
+      "lookupLista": ""
+    },
+    {
+      "encabezado": "F60 Observaciones",
+      "interno": "RN_Observaciones",
+      "tipo": "Note",
+      "lookupLista": ""
+    }
+  ]
+}

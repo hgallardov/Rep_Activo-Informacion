@@ -1,0 +1,6 @@
+Title;RN_Codigo;Gerencia;Entidad;RN_EsCritico;RN_Activa
+Suscripción de seguros generales;PR-SUS-G;Gerencia Técnica Seguros Generales;Seguros Generales;true;true
+Liquidación de siniestros;PR-SIN-G;Gerencia de Siniestros Seguros Generales;Seguros Generales;true;true
+Pago de pensiones y rentas vitalicias;PR-REN-V;Gerencia de Beneficios y Rentas Vitalicias;Seguros de Vida;true;true
+Operación de servicios TI;PR-OTI;Gerencia de Tecnología de la Información;Ambas;true;true
+Gestión de riesgos y cumplimiento;PR-GRC;Gerencia de Riesgos y Cumplimiento;Ambas;false;true

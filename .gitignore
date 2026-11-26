@@ -1,0 +1,10 @@
+# Evidencias y salidas de ejecución (pueden contener información Reservada)
+logs/
+*_reporte.xlsx
+CAAT_*.xlsx
+# Configuraciones por ambiente con datos del tenant
+config/solution.config.*.json
+# Entornos locales
+node_modules/
+__pycache__/
+.DS_Store

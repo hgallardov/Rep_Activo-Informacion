@@ -1,0 +1,11 @@
+Title;RN_Codigo;Entidad;RN_EsCorporativa;RN_GerenteCargo;RN_Activa
+Gerencia de Tecnología de la Información;GTI;Ambas;true;Gerente de TI;true
+Gerencia de Riesgos y Cumplimiento;GRC;Ambas;true;Gerente de Riesgos y Cumplimiento;true
+Gerencia de Administración y Finanzas;GAF;Ambas;true;Gerente de Administración y Finanzas;true
+Gerencia de Personas;GPE;Ambas;true;Gerente de Personas;true
+Gerencia Técnica Seguros Generales;GTG;Seguros Generales;false;Gerente Técnico RNSG;true
+Gerencia Comercial Seguros Generales;GCG;Seguros Generales;false;Gerente Comercial RNSG;true
+Gerencia de Siniestros Seguros Generales;GSG;Seguros Generales;false;Gerente de Siniestros RNSG;true
+Gerencia Técnica Seguros de Vida;GTV;Seguros de Vida;false;Gerente Técnico RNSV;true
+Gerencia Comercial Seguros de Vida;GCV;Seguros de Vida;false;Gerente Comercial RNSV;true
+Gerencia de Beneficios y Rentas Vitalicias;GBV;Seguros de Vida;false;Gerente de Beneficios RNSV;true

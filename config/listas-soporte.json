@@ -1,0 +1,730 @@
+{
+  "$comment": "Listas y bibliotecas de soporte (sección 12 del ER). Tipos: Text, Note, Choice, MultiChoice, Lookup, Number, DateTime, Boolean, User, UserMulti. 'permisos' documenta el modelo aplicado por scripts/05-Set-InventoryPermissions.ps1.",
+  "listas": [
+    {
+      "nombre": "Entidades",
+      "descripcion": "Maestro de entidades (RF-01).",
+      "permisos": "Lectura todos; edición CISO",
+      "campos": [
+        {
+          "interno": "RN_RazonSocial",
+          "nombre": "Razón social",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_RUT",
+          "nombre": "RUT",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_Codigo",
+          "nombre": "Código",
+          "tipo": "Text",
+          "indexado": true,
+          "nota": "RNSG, RNSV o AMBAS; se usa en el ID del activo."
+        },
+        {
+          "interno": "RN_GrupoLectores",
+          "nombre": "Grupo Entra ID lectores",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_EsCompartida",
+          "nombre": "Valor 'Ambas' (compartido)",
+          "tipo": "Boolean"
+        },
+        {
+          "interno": "RN_Activa",
+          "nombre": "Activa",
+          "tipo": "Boolean"
+        }
+      ]
+    },
+    {
+      "nombre": "Gerencias",
+      "descripcion": "Gerencias y áreas por entidad, incluidas las corporativas (RF-02).",
+      "permisos": "Lectura todos; edición CISO",
+      "campos": [
+        {
+          "interno": "RN_Codigo",
+          "nombre": "Código",
+          "tipo": "Text",
+          "indexado": true,
+          "nota": "Sigla de 2 a 6 letras para el ID (p. ej. GTI, GRC)."
+        },
+        {
+          "interno": "RN_Entidad",
+          "nombre": "Entidad",
+          "tipo": "Lookup",
+          "lookupLista": "Entidades",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_EsCorporativa",
+          "nombre": "Área corporativa (sirve a ambas)",
+          "tipo": "Boolean"
+        },
+        {
+          "interno": "RN_GrupoEdicion",
+          "nombre": "Grupo Entra ID de edición",
+          "tipo": "Text",
+          "nota": "SGSI-INV-[ENT]-[GER]-EDIT"
+        },
+        {
+          "interno": "RN_GrupoEdicionSPId",
+          "nombre": "Id SharePoint del grupo de edición",
+          "tipo": "Number",
+          "nota": "Lo completa scripts/04 (ensureuser); FL-01 lo usa en addroleassignment."
+        },
+        {
+          "interno": "RN_GrupoEdicionEntraId",
+          "nombre": "Id Entra ID del grupo de edición",
+          "tipo": "Text",
+          "nota": "Lo completa scripts/05; FL-01 lo usa para verificar que quien invoca pertenece a la gerencia."
+        },
+        {
+          "interno": "RN_GerenteCargo",
+          "nombre": "Cargo del gerente (jefatura para escalamiento)",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_Activa",
+          "nombre": "Activa",
+          "tipo": "Boolean"
+        }
+      ]
+    },
+    {
+      "nombre": "Procesos",
+      "descripcion": "Procesos de negocio por gerencia (RF-02).",
+      "permisos": "Lectura todos; edición CISO",
+      "campos": [
+        {
+          "interno": "RN_Codigo",
+          "nombre": "Código",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_Gerencia",
+          "nombre": "Gerencia",
+          "tipo": "Lookup",
+          "lookupLista": "Gerencias",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_Entidad",
+          "nombre": "Entidad",
+          "tipo": "Lookup",
+          "lookupLista": "Entidades",
+          "lookupCampo": "Title"
+        },
+        {
+          "interno": "RN_EsCritico",
+          "nombre": "Proceso crítico (BIA)",
+          "tipo": "Boolean"
+        },
+        {
+          "interno": "RN_Activa",
+          "nombre": "Activo",
+          "tipo": "Boolean"
+        }
+      ]
+    },
+    {
+      "nombre": "Cargos",
+      "descripcion": "Cargos con su titular vigente (RF-03, RN-12). Los activos se asocian al cargo.",
+      "permisos": "Lectura todos; edición CISO y Personas (titulares)",
+      "campos": [
+        {
+          "interno": "RN_Gerencia",
+          "nombre": "Gerencia",
+          "tipo": "Lookup",
+          "lookupLista": "Gerencias",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_Entidad",
+          "nombre": "Entidad",
+          "tipo": "Lookup",
+          "lookupLista": "Entidades",
+          "lookupCampo": "Title"
+        },
+        {
+          "interno": "RN_Titular",
+          "nombre": "Titular vigente",
+          "tipo": "User",
+          "indexado": true
+        },
+        {
+          "interno": "RN_Subrogante",
+          "nombre": "Subrogante registrado",
+          "tipo": "User"
+        },
+        {
+          "interno": "RN_PuedeSerDueno",
+          "nombre": "Puede ser Dueño (gerente o jefatura)",
+          "tipo": "Boolean"
+        },
+        {
+          "interno": "RN_Jefatura",
+          "nombre": "Cargo superior (escalamiento)",
+          "tipo": "Lookup",
+          "lookupLista": "Cargos",
+          "lookupCampo": "Title"
+        },
+        {
+          "interno": "RN_EstadoTitular",
+          "nombre": "Estado del titular",
+          "tipo": "Choice",
+          "opciones": [
+            "Vigente",
+            "Vacante",
+            "Titular inactivo"
+          ],
+          "nota": "Lo actualiza FL-14 (RF-50)."
+        },
+        {
+          "interno": "RN_Delegados",
+          "nombre": "Delegados de registro",
+          "tipo": "UserMulti",
+          "nota": "Designados por el Dueño (D-06)."
+        }
+      ]
+    },
+    {
+      "nombre": "Terceros",
+      "descripcion": "Proveedores y encargados de tratamiento (RF-04).",
+      "permisos": "Lectura todos; edición CISO y Riesgos",
+      "campos": [
+        {
+          "interno": "RN_RUT",
+          "nombre": "RUT / identificador",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_NumeroContrato",
+          "nombre": "N° de contrato",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_Pais",
+          "nombre": "País de procesamiento",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_ExternalizadoSignificativo",
+          "nombre": "Servicio externalizado significativo (NCG 573)",
+          "tipo": "Choice",
+          "opciones": [
+            "Sí",
+            "No"
+          ]
+        },
+        {
+          "interno": "RN_EsEncargadoTratamiento",
+          "nombre": "Encargado de tratamiento (Ley 21.719)",
+          "tipo": "Choice",
+          "opciones": [
+            "Sí",
+            "No"
+          ]
+        },
+        {
+          "interno": "RN_Entidades",
+          "nombre": "Entidades contratantes",
+          "tipo": "MultiChoice",
+          "opciones": [
+            "RNSG",
+            "RNSV"
+          ]
+        },
+        {
+          "interno": "RN_VigenciaContrato",
+          "nombre": "Vigencia del contrato",
+          "tipo": "DateTime"
+        },
+        {
+          "interno": "RN_Activa",
+          "nombre": "Activo",
+          "tipo": "Boolean"
+        }
+      ]
+    },
+    {
+      "nombre": "Parametros",
+      "descripcion": "Parámetros de negocio editables sin código (RF-05, RNF-17).",
+      "permisos": "Lectura todos; edición solo CISO",
+      "campos": [
+        {
+          "interno": "RN_Valor",
+          "nombre": "Valor",
+          "tipo": "Note",
+          "nota": "Texto multilínea sin formato: algunos valores JSON superan 255 caracteres."
+        },
+        {
+          "interno": "RN_Tipo",
+          "nombre": "Tipo de dato",
+          "tipo": "Choice",
+          "opciones": [
+            "Número",
+            "Texto",
+            "Booleano",
+            "JSON"
+          ]
+        },
+        {
+          "interno": "RN_Descripcion",
+          "nombre": "Descripción",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_Fuente",
+          "nombre": "Fuente normativa",
+          "tipo": "Text"
+        }
+      ]
+    },
+    {
+      "nombre": "Correlativos",
+      "descripcion": "Último correlativo usado por ENTIDAD-GERENCIA (RN-01: no se reutiliza).",
+      "permisos": "Lectura CISO; escritura solo cuenta de servicio",
+      "campos": [
+        {
+          "interno": "RN_Ultimo",
+          "nombre": "Último correlativo",
+          "tipo": "Number"
+        }
+      ]
+    },
+    {
+      "nombre": "RelacionesActivos",
+      "descripcion": "Dependencias entre activos (RF-11).",
+      "permisos": "Heredados del activo origen",
+      "campos": [
+        {
+          "interno": "RN_ActivoOrigen",
+          "nombre": "Activo origen",
+          "tipo": "Lookup",
+          "lookupLista": "Activos",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_ActivoDestino",
+          "nombre": "Activo destino",
+          "tipo": "Lookup",
+          "lookupLista": "Activos",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_TipoRelacion",
+          "nombre": "Tipo de relación",
+          "tipo": "Choice",
+          "opciones": [
+            "Depende de",
+            "Alimenta a",
+            "Contiene / agrega a"
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "HistorialClasificacion",
+      "descripcion": "Bitácora inmutable de cambios de nivel, estado, Dueño y Custodio (RF-32, RF-35, RNF-07). Retención mínima 5 años.",
+      "permisos": "Lectura transversal (CISO, DPO, Riesgos, CSI, Auditoría); escritura solo cuenta de servicio. El Dueño ve el historial de su activo en RN_HistorialResumen.",
+      "campos": [
+        {
+          "interno": "RN_Activo",
+          "nombre": "Activo",
+          "tipo": "Lookup",
+          "lookupLista": "Activos",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_IdActivoTexto",
+          "nombre": "ID del activo (texto)",
+          "tipo": "Text",
+          "indexado": true,
+          "nota": "Se conserva aunque el activo se elimine."
+        },
+        {
+          "interno": "RN_Entidad",
+          "nombre": "Entidad",
+          "tipo": "Text",
+          "indexado": true
+        },
+        {
+          "interno": "RN_TipoEvento",
+          "nombre": "Tipo de evento",
+          "tipo": "Choice",
+          "opciones": [
+            "Alta",
+            "Declaración",
+            "Validación CISO",
+            "Validación DPO",
+            "Observación",
+            "Reclasificación",
+            "Cambio de estado",
+            "Cambio de Dueño",
+            "Cambio de Custodio",
+            "Revisión integral",
+            "Revisión de accesos",
+            "Excepción",
+            "Baja",
+            "Cambio no autorizado revertido",
+            "Carga masiva"
+          ]
+        },
+        {
+          "interno": "RN_ValorAnterior",
+          "nombre": "Valor anterior",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_ValorNuevo",
+          "nombre": "Valor nuevo",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_Motivo",
+          "nombre": "Motivo / comentario",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_Usuario",
+          "nombre": "Usuario que originó el cambio",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_FechaEvento",
+          "nombre": "Fecha del evento",
+          "tipo": "DateTime",
+          "indexado": true
+        },
+        {
+          "interno": "RN_VersionActivo",
+          "nombre": "Versión de SharePoint del activo",
+          "tipo": "Text"
+        }
+      ]
+    },
+    {
+      "nombre": "Revisiones",
+      "descripcion": "Revisiones integrales y de accesos (RF-28 a RF-31).",
+      "permisos": "Lectura transversal (CISO, DPO, Riesgos, CSI, Auditoría); escritura solo cuenta de servicio. El Dueño revisa desde la ficha del activo (sin permisos únicos por revisión, RNF-11).",
+      "campos": [
+        {
+          "interno": "RN_Activo",
+          "nombre": "Activo",
+          "tipo": "Lookup",
+          "lookupLista": "Activos",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_TipoRevision",
+          "nombre": "Tipo de revisión",
+          "tipo": "Choice",
+          "opciones": [
+            "Integral",
+            "Accesos"
+          ],
+          "indexado": true
+        },
+        {
+          "interno": "RN_Campana",
+          "nombre": "Campaña",
+          "tipo": "Text",
+          "indexado": true
+        },
+        {
+          "interno": "RN_FechaVencimiento",
+          "nombre": "Fecha de vencimiento",
+          "tipo": "DateTime",
+          "indexado": true
+        },
+        {
+          "interno": "RN_EstadoRevision",
+          "nombre": "Estado",
+          "tipo": "Choice",
+          "opciones": [
+            "Pendiente",
+            "Completada sin cambios",
+            "Completada con cambios",
+            "Vencida",
+            "Anulada"
+          ],
+          "indexado": true
+        },
+        {
+          "interno": "RN_Resultado",
+          "nombre": "Resultado / hallazgos",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_AccesosRetirados",
+          "nombre": "N° de accesos retirados",
+          "tipo": "Number"
+        },
+        {
+          "interno": "RN_Responsable",
+          "nombre": "Responsable (UPN del titular del cargo Dueño)",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_FechaCompletada",
+          "nombre": "Fecha de cierre",
+          "tipo": "DateTime"
+        },
+        {
+          "interno": "RN_AvisosEnviados",
+          "nombre": "Avisos enviados",
+          "tipo": "Text",
+          "nota": "Marca '30','15','0','ESC' para no duplicar recordatorios."
+        },
+        {
+          "interno": "RN_IdActivoTexto",
+          "nombre": "ID del activo (texto)",
+          "tipo": "Text",
+          "indexado": true
+        },
+        {
+          "interno": "RN_Entidad",
+          "nombre": "Entidad",
+          "tipo": "Text",
+          "indexado": true
+        }
+      ]
+    },
+    {
+      "nombre": "Excepciones",
+      "descripcion": "Registro de excepciones del SGSI (RF-36 a RF-38).",
+      "permisos": "CISO, DPO, CSI y Dueño solicitante",
+      "campos": [
+        {
+          "interno": "RN_Activo",
+          "nombre": "Activo",
+          "tipo": "Lookup",
+          "lookupLista": "Activos",
+          "lookupCampo": "Title",
+          "indexado": true
+        },
+        {
+          "interno": "RN_Entidad",
+          "nombre": "Entidad",
+          "tipo": "Text",
+          "indexado": true
+        },
+        {
+          "interno": "RN_ControlExceptuado",
+          "nombre": "Control o regla exceptuada",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_Fundamento",
+          "nombre": "Fundamento",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_RiesgoAsociado",
+          "nombre": "Riesgo asociado",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_ControlesCompensatorios",
+          "nombre": "Controles compensatorios",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_FechaInicio",
+          "nombre": "Inicio de vigencia",
+          "tipo": "DateTime"
+        },
+        {
+          "interno": "RN_FechaFin",
+          "nombre": "Fin de vigencia (máx. 12 meses)",
+          "tipo": "DateTime",
+          "indexado": true
+        },
+        {
+          "interno": "RN_EstadoExcepcion",
+          "nombre": "Estado",
+          "tipo": "Choice",
+          "opciones": [
+            "Solicitada",
+            "En evaluación CISO",
+            "En evaluación DPO",
+            "En autorización CSI",
+            "Vigente",
+            "Rechazada",
+            "Vencida",
+            "Cerrada"
+          ],
+          "indexado": true
+        },
+        {
+          "interno": "RN_Solicitante",
+          "nombre": "Solicitante",
+          "tipo": "User"
+        },
+        {
+          "interno": "RN_EvaluacionCISO",
+          "nombre": "Evaluación CISO",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_EvaluacionDPO",
+          "nombre": "Evaluación DPO",
+          "tipo": "Note"
+        },
+        {
+          "interno": "RN_ActaCSI",
+          "nombre": "Acta / acuerdo CSI",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_EsRenovacion",
+          "nombre": "Es renovación",
+          "tipo": "Boolean"
+        }
+      ]
+    },
+    {
+      "nombre": "CatalogoRAT",
+      "descripcion": "Catálogo de actividades del RAT exportado por el DPO (RF-39; depende de D-04).",
+      "permisos": "Lectura todos; edición DPO",
+      "campos": [
+        {
+          "interno": "RN_NombreActividad",
+          "nombre": "Nombre de la actividad",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_Entidad",
+          "nombre": "Entidad",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_Vigente",
+          "nombre": "Vigente",
+          "tipo": "Boolean"
+        }
+      ]
+    },
+    {
+      "nombre": "ReferenciaCMDB",
+      "descripcion": "Extracto periódico de la CMDB de TI (RF-45; depende de D-05).",
+      "permisos": "Lectura todos; escritura cuenta de servicio",
+      "campos": [
+        {
+          "interno": "RN_NombreCI",
+          "nombre": "Nombre del CI",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_TipoCI",
+          "nombre": "Tipo de CI",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_EstadoCI",
+          "nombre": "Estado en CMDB",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_FechaExtracto",
+          "nombre": "Fecha del extracto",
+          "tipo": "DateTime"
+        }
+      ]
+    },
+    {
+      "nombre": "PertenenciaGrupos",
+      "descripcion": "Tabla de pertenencia a grupos para la seguridad por filas de Power BI (sección 13).",
+      "permisos": "Lectura CISO / Power BI; escritura cuenta de servicio",
+      "campos": [
+        {
+          "interno": "RN_UPN",
+          "nombre": "UPN del usuario",
+          "tipo": "Text",
+          "indexado": true
+        },
+        {
+          "interno": "RN_Grupo",
+          "nombre": "Grupo",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_EntidadCodigo",
+          "nombre": "Código de entidad",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_GerenciaCodigo",
+          "nombre": "Código de gerencia",
+          "tipo": "Text"
+        },
+        {
+          "interno": "RN_Transversal",
+          "nombre": "Rol transversal",
+          "tipo": "Boolean"
+        }
+      ]
+    }
+  ],
+  "bibliotecas": [
+    {
+      "nombre": "Evidencias",
+      "descripcion": "Evidencias por activo (RF-12). Carpeta por ENTIDAD/GERENCIA con los permisos de la gerencia; los activos 'Ambas' usan la carpeta AMBAS/<ID del activo> con los permisos del activo.",
+      "carpetas": [
+        "RNSG",
+        "RNSV",
+        "AMBAS"
+      ],
+      "campos": [
+        {
+          "interno": "RN_IdActivo",
+          "nombre": "ID del activo",
+          "tipo": "Text",
+          "indexado": true
+        },
+        {
+          "interno": "RN_TipoEvidencia",
+          "nombre": "Tipo de evidencia",
+          "tipo": "Choice",
+          "opciones": [
+            "Lista de accesos",
+            "Certificado de destrucción",
+            "Acta de baja",
+            "Acta CSI",
+            "Revisión de accesos",
+            "Contrato / NDA",
+            "Otro"
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "CargaMasiva",
+      "descripcion": "Carpeta de entrada de FL-11 (plantilla Excel) y reportes de errores.",
+      "carpetas": [
+        "Entrada",
+        "Procesados",
+        "Reportes",
+        "CMDB"
+      ],
+      "campos": []
+    },
+    {
+      "nombre": "Respaldos",
+      "descripcion": "Respaldo semanal de las listas (RNF-08). Acceso solo CISO y Admin TI.",
+      "carpetas": [],
+      "campos": []
+    }
+  ]
+}
